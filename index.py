@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.register_blueprint(first_test_bp, url_prefix="/first_test")
 
 line_bot_api = LineBotApi(os.getenv("LineToken"))
-handler = WebhookHandler(os.getenv('LineChannelSecret'))
+line_handler = WebhookHandler(os.getenv('LineChannelSecret'))
 
 
 @app.route("/")
@@ -39,7 +39,7 @@ def callback():
     app.logger.info("Request body: " + body)
 
     try:
-        handler.handle(body, signature)
+        line_handler.handle(body, signature)
     except InvalidSignatureError:
         abort(400)
 
@@ -49,7 +49,7 @@ def callback():
 Handler在收到事件後，會根據定義的行為來做出對應的處理。
 因此我們會需要在這個區塊中定義我們的行為。
 """
-@handler.add(MessageEvent, message=TextMessage)
+@line_handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
