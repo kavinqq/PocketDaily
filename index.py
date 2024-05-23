@@ -30,7 +30,7 @@ def home():
 """
 所有從LINE平台發送的事件都會發送到這個路由上，這個路由會將事件轉發給handler進一步處理。
 """
-@app.route("/callback", methods=['POST'])
+@app.route("/webhook", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
 
