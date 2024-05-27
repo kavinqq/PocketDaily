@@ -1,24 +1,21 @@
 import os
 from flask import Flask, request, abort
 from apis.first_test.main import first_test_bp
-from linebot import (
-    LineBotApi,
-    WebhookHandler
-)
+from apis.msg_center.main import EventCenter
+from linebot import WebhookHandler
 from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
     MessageEvent,
     TextMessage,
-    TextSendMessage,
 )
 
 
 app = Flask(__name__)
 app.register_blueprint(first_test_bp, url_prefix="/first_test")
 
-line_bot_api = LineBotApi(os.getenv("LineToken"))
+
 line_handler = WebhookHandler(os.getenv('LineChannelSecret'))
 
 
@@ -51,10 +48,8 @@ Handler在收到事件後，會根據定義的行為來做出對應的處理。
 """
 @line_handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text)
-    )
+    msg_center = EventCenter()
+    msg_center.handle_event(event)
 
 
 if __name__ == "__main__":
