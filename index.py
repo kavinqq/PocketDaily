@@ -21,7 +21,7 @@ line_handler = WebhookHandler(os.getenv('LineChannelSecret'))
 
 @app.route("/")
 def home():
-    return "Hello! Main App!"
+    return "Welcome to Line Bot!"
 
 
 """

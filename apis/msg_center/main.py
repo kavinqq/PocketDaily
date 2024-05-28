@@ -1,4 +1,7 @@
-from apis.random_int import main as random_int_main
+from linebot.models import TextSendMessage
+
+from apis.random_int.main import RandomInt
+from constants.global_variables import line_bot_api
 
 
 class EventCenter:
@@ -13,4 +16,10 @@ class EventCenter:
         message = event.message.text
 
         if "亂數" in message:
-            return random_int_main(event)
+            random_int = RandomInt()
+            random_int.main(event)
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=event.message.text)
+            )            

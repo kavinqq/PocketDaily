@@ -10,10 +10,11 @@ class UserStates:
     def get_state(self, user_id):
         return self._states.get(user_id, None)
 
-    def set_state(self, user_id, action, stage) -> None:
+    def set_state(self, user_id, action, stage, data) -> None:
         self._states[user_id] = {
             "action": action,
-            "stage": stage
+            "stage": stage,
+            "data": data
         }
 
         return None
@@ -21,8 +22,8 @@ class UserStates:
     def delete_state(self, user_id):
         return self._states.pop(user_id, None)
 
-    def edit_state(self, user_id, action, stage) -> None:
+    def edit_state(self, user_id, action, stage, data) -> None:
         self.delete_state(user_id)
-        self.set_state(user_id, action, stage)
+        self.set_state(user_id, action, stage, data)
 
         return None
