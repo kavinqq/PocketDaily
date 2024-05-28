@@ -9,14 +9,11 @@ from utils.user_states import UserStates
 
 class RandomInt:
     def __init__(self) -> None:
-        self.user_states = UserStates        
+        self.user_states = UserStates()        
         
     def main(self, event: MessageEvent) -> None:
         user_id = event.source.user_id
         user_state = self.user_states.get_state(user_id)
-    
-        user_states = UserStates
-        user_state = user_states.get_state(user_id)
         
         if user_state and user_state["action"] == "random_int":
             stage = user_state["stage"]
