@@ -22,7 +22,7 @@ class UserStates:
     def delete_state(self, user_id):
         return self._states.pop(user_id, None)
 
-    def edit_state(self, user_id, action, stage, data) -> None:
+    def edit_state(self, user_id, action, stage, data=None) -> None:
         self.delete_state(user_id)
         self.set_state(user_id, action, stage, data)
 
