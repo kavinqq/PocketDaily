@@ -11,11 +11,10 @@ class RandomInt:
     def __init__(self) -> None:
         self.user_states = UserStates()        
         
-    def main(self, event: MessageEvent) -> None:
+    def main(self, event: MessageEvent, user_state=None) -> None:
         user_id = event.source.user_id
-        user_state = self.user_states.get_state(user_id)
         
-        if user_state and user_state["action"] == "random_int":
+        if user_state:
             stage = user_state["stage"]
             
             match stage:
