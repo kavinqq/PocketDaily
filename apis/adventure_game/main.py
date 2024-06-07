@@ -61,7 +61,7 @@ class AdventureGame:
                 TextSendMessage(text=f"{response}\n產生圖片需要一點時間，請稍等")
             )
             
-            self.gen_picture_reply(event, response)
+            self.gen_reply(event, response)
             
             return None
             
@@ -79,49 +79,30 @@ class AdventureGame:
             history_messages=history_messages            
         )        
         
-        self.gen_text_reply(event, response)
-        
-        self.gen_picture_reply(event, response)
+        self.gen_reply(event, response)
         
         return None
     
-    def gen_text_reply(self, event: MessageEvent, response: str) -> None:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=f"{response}\n產生圖片需要一點時間，請稍等")
-            
-        )
-        
-        return None
-    
-    
-    def gen_picture_reply(self, event: MessageEvent, response: str) -> None:
+    def gen_reply(self, event: MessageEvent, response: str) -> None:
         picture_url = self.open_ai_helper.dall_e(
             input_text=response,
             size="256x256"
         )
         
-        line_bot_api.push_message(
-            self.user_id,
-            TextSendMessage(text=f"圖片連結如下:\n{picture_url}")
+        image_message = ImageSendMessage(
+            original_content_url=picture_url,
+            preview_image_url=picture_url,
         )
         
-        try:
-            image_message = ImageSendMessage(
-                original_content_url=picture_url,
-                preview_image_url=picture_url,
-            )
-            
-            line_bot_api.push_message(
-                self.user_id,
-                image_message
-            )
-        except Exception as e:
-            line_bot_api.push_message(
-                event.source.user_id,
-                TextSendMessage(text=f"圖片發送失敗，請重試. Reason:{str(e)}")
-            )
+        line_bot_api.push_message(
+            self.user_id,
+            image_message
+        )
+        
+        
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage(response), image_message]
+        )
         
         return None
-        
-        
