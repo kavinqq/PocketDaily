@@ -29,15 +29,15 @@ class EventCenter:
 
         user_states = UserStates()
         user_state = user_states.get_state(user_id)
-        action = user_state.get("action", None)        
-        
+        action = user_state.get("action") if user_state else ""
+
         logger.info(f"User_id:{user_id}\tMessage:{message}\tReply:{event.reply_token}")
 
         if any(like in message for like in LIKES):
-            logger.info("喜歡")
+            logger.info("希望能更瞭解她")
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="喜歡~!!")
+                TextSendMessage(text="希望能更瞭解她")
             )
         elif "亂數" in message or action == "random_int":
             logger.info("亂數")
@@ -52,4 +52,3 @@ class EventCenter:
                 event.reply_token,
                 TextSendMessage(text=message)
             )
-            
