@@ -44,6 +44,11 @@ class EventCenter:
         elif "圖片遊戲" in message or action == "adventure_game":
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)
+        elif "測試push" in message:
+            line_bot_api.push_message(
+                user_id,
+                TextSendMessage(text="這是一則測試訊息")
+            )
         else:
             line_bot_api.reply_message(
                 event.reply_token,
