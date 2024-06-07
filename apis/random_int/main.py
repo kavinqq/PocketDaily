@@ -21,9 +21,7 @@ class RandomInt:
     ) -> None:
         user_id = event.source.user_id
         
-        if user_state is None:
-            reply_message = self.stage_0(user_id, user_state)
-        else:
+        if user_state:
             data = user_state.get("data", {})
             
             if "start" in data:
@@ -37,6 +35,8 @@ class RandomInt:
                     user_id=user_id, 
                     message=event.message.text,
                 )
+        else:
+            reply_message = self.stage_0(user_id, user_state)
             
         line_bot_api.reply_message(
             event.reply_token,
@@ -44,7 +44,7 @@ class RandomInt:
         )        
     
     def stage_0(self, user_id) -> str:
-        self.user_states.edit_state(user_id, "random_int", 0)
+        self.user_states.edit_state(user_id, "random_int")
         reply_message = "請輸入亂數開始的數字"
         
         return reply_message
