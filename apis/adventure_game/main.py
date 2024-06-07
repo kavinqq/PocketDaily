@@ -87,17 +87,21 @@ class AdventureGame:
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=f"{response}\n\n產生圖片需要一點時間，請稍等")
-        )
-        
+        )        
         
         line_bot_api.push_message(
             self.user_id,
-            TextSendMessage(text="這是測試push")
+            TextSendMessage(text="這是測試push1")
         )
         
         picture_url = self.open_ai_helper.dall_e(
             input_text=response,
             size="256x256"
+        )
+        
+        line_bot_api.push_message(
+            self.user_id,
+            TextSendMessage(text="這是測試push2")
         )
         
         line_bot_api.push_message(
