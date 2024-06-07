@@ -84,25 +84,21 @@ class AdventureGame:
         return None
     
     def gen_reply(self, event: MessageEvent, response: str) -> None:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=f"{response}\n\n產生圖片需要一點時間，請稍等")
+        )
+        
         picture_url = self.open_ai_helper.dall_e(
             input_text=response,
             size="256x256"
         )
-        
+                
         image_message = ImageSendMessage(
             original_content_url=picture_url,
             preview_image_url=picture_url,
         )
         
-        line_bot_api.push_message(
-            self.user_id,
-            image_message
-        )        
-        
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=f"{response}\n\n產生圖片需要一點時間，請稍等")
-        )
         line_bot_api.push_message(
             self.user_id,
             image_message,
