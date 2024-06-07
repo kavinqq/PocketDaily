@@ -1,7 +1,8 @@
 
 from linebot.models import (
     MessageEvent,
-    TextSendMessage
+    TextSendMessage,
+    ImageSendMessage
 )
 
 from apis.random_int.main import RandomInt
@@ -9,6 +10,7 @@ from apis.adventure_game.main import AdventureGame
 from constants.global_variables import line_bot_api
 
 from utils.user_states import UserStates
+from utils.opanai_helper import OpenAIHelper
 from logging_config import logger
 
 
@@ -44,15 +46,19 @@ class EventCenter:
         elif "圖片遊戲" in message or action == "adventure_game":
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)
-        elif "測試push" in message:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="這是測試reply")
+        elif "測試dall" in message:
+            open_ai_helper = OpenAIHelper()
+            pic_url = open_ai_helper.dall_e(
+                "幫我生成一窩貓咪",
+                size="256x256"
             )
             
-            line_bot_api.push_message(
-                user_id,
-                TextSendMessage(text="這是測試push")
+            line_bot_api.reply_message(
+                event.reply_token,                
+                ImageSendMessage(
+                    original_content_url=pic_url,
+                    preview_image_url=pic_url
+                )
             )
         else:
             line_bot_api.reply_message(
