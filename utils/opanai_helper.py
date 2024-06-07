@@ -56,7 +56,7 @@ class OpenAIHelper:
                 return False        
         
         response = self.client.images.generate(
-            model="dall-e-3",
+            model="dall-e-2",
             prompt=input_text,
             size=(
                 size
