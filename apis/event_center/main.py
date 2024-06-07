@@ -45,9 +45,14 @@ class EventCenter:
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)
         elif "測試push" in message:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="這是測試reply")
+            )
+            
             line_bot_api.push_message(
                 user_id,
-                TextSendMessage(text="這是一則測試訊息")
+                TextSendMessage(text="這是測試push")
             )
         else:
             line_bot_api.reply_message(
