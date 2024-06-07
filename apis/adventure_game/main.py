@@ -93,6 +93,11 @@ class AdventureGame:
             input_text=response,
             size="256x256"
         )
+        
+        line_bot_api.push_message(
+            self.user_id,
+            TextSendMessage(text=f"這是你的遊戲場景圖, {picture_url}")
+        )     
                 
         image_message = ImageSendMessage(
             original_content_url=picture_url,

@@ -39,30 +39,12 @@ class OpenAIHelper:
 
         Returns:
             str: 產生的圖片網址
-        """
-        
-        def check_size_format(size: str) -> bool:
-            """檢查size格式是否正確, 若不正確則回傳預設值
-
-            Args:
-                size (str): 圖片尺寸
-
-            Returns:
-                bool: 是否符合格式
-            """
-            if isinstance(size, str):            
-                return not re.match(r"\d+x\d+", size)
-            else:
-                return False        
+        """        
         
         response = self.client.images.generate(
             model="dall-e-2",
             prompt=input_text,
-            size=(
-                size
-                if check_size_format(size)
-                else "256x256"
-            )
+            size=size
         )
         
         image_url = response.data[0].url
