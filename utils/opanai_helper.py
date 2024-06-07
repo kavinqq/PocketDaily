@@ -27,7 +27,11 @@ class OpenAIHelper:
             
             self._initialized = True
     
-    def dall_e(self, input_text: str, size:str) -> str:
+    def dall_e(
+        self,
+        input_text: str,
+        size:str
+    ) -> str:
         """回傳
 
         Args:

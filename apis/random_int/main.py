@@ -13,12 +13,14 @@ from constants.global_variables import line_bot_api
 class RandomInt:
     def __init__(self) -> None:
         self.user_states = UserStates()
+        self.action = "random_int"
     
     def main(
         self,
         event: MessageEvent,
         user_state: Union[dict, None]
     ) -> None:
+        
         user_id = event.source.user_id
         
         if user_state:
@@ -36,15 +38,20 @@ class RandomInt:
                     message=event.message.text,
                 )
         else:
-            reply_message = self.stage_0(user_id, user_state)
+            reply_message = self.stage_0(user_id)
             
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=reply_message)
         )        
+        
+        return None
     
     def stage_0(self, user_id) -> str:
-        self.user_states.edit_state(user_id, "random_int")
+        self.user_states.edit_state(
+            user_id=user_id,
+            action=self.action,
+        )
         reply_message = "請輸入亂數開始的數字"
         
         return reply_message

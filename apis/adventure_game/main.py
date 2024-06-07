@@ -92,6 +92,7 @@ class AdventureGame:
     def gen_picture_reply(self, event: MessageEvent, response: str) -> None:
         picture_url = self.open_ai_helper.dall_e(
             input_text=response,
+            size="480x480"
         )
         
         line_bot_api.push_message(
