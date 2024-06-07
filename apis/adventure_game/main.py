@@ -89,6 +89,12 @@ class AdventureGame:
             TextSendMessage(text=f"{response}\n\n產生圖片需要一點時間，請稍等")
         )
         
+        
+        line_bot_api.push_message(
+            self.user_id,
+            TextSendMessage(text="這是測試push")
+        )
+        
         picture_url = self.open_ai_helper.dall_e(
             input_text=response,
             size="256x256"
