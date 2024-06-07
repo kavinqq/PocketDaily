@@ -24,7 +24,8 @@ class RandomInt:
         user_id = event.source.user_id
         
         if user_state:
-            data = user_state.get("data", {})
+            data = user_state.get("data")
+            data = data if isinstance(data, dict) else {}
             
             if "start" in data:
                 reply_message =self.stage_1_to_2(
