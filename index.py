@@ -16,7 +16,7 @@ from linebot.models import (
 )
 
 from apis.first_test.main import first_test_bp
-from apis.msg_center.main import EventCenter
+from apis.event_center.main import EventCenter
 
 
 app = Flask(__name__)
@@ -55,8 +55,8 @@ Handler在收到事件後，會根據定義的行為來做出對應的處理。
 """
 @line_handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg_center = EventCenter()
-    msg_center.handle_event(event)
+    event_center = EventCenter()
+    event_center.handle_event(event)
     
 
 if __name__ == "__main__":

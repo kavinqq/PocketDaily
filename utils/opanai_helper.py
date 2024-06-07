@@ -62,9 +62,7 @@ class OpenAIHelper:
                 size
                 if check_size_format(size)
                 else "256x256"
-            ),
-            quality="standard",
-            n=1
+            )
         )
         
         image_url = response.data[0].url

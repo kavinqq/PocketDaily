@@ -95,13 +95,20 @@ class AdventureGame:
             size="256x256"
         )
         
-        line_bot_api.push_message(
-            event.source.user_id,
-            ImageSendMessage(
-                original_content_url=picture_url,
-                preview_image_url=picture_url
-            )
+        image_message = ImageSendMessage(
+            original_content_url=picture_url,
+            preview_image_url=picture_url,
         )
+        try:
+            line_bot_api.push_message(
+                event.source.user_id,
+                image_message
+            )
+        except Exception as e:
+            line_bot_api.push_message(
+                event.source.user_id,
+                TextSendMessage(text=f"圖片發送失敗，請重試. Reason:{str(e)}")
+            )
         
         return None
         
