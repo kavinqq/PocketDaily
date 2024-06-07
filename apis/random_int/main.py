@@ -1,37 +1,42 @@
 import random
-from constants.global_variables import line_bot_api
+from typing import Union
+
 from linebot.models import (
     MessageEvent,
     TextSendMessage,
 )
+
 from utils.user_states import UserStates
+from constants.global_variables import line_bot_api
 
 
 class RandomInt:
     def __init__(self) -> None:
-        self.user_states = UserStates()        
-        
-    def main(self, event: MessageEvent, user_state=None) -> None:
+        self.user_states = UserStates()
+    
+    def main(
+        self,
+        event: MessageEvent,
+        user_state: Union[dict, None]
+    ) -> None:
         user_id = event.source.user_id
         
-        if user_state:
-            stage = user_state["stage"]
+        if user_state is None:
+            reply_message = self.stage_0(user_id, user_state)
+        else:
+            data = user_state.get("data", {})
             
-            match stage:
-                case 0:
-                    reply_message = self.stage_0_to_1(
-                        user_id=user_id, 
-                        message=event.message.text
-                    )                
-                case 1:
-                    reply_message =self.stage_1_to_2(
-                        user_id=user_id,
-                        message=event.message.text
-                    )
-                case _:
-                    reply_message = "發生錯誤，請重新輸入。"
-        else:    
-            reply_message = self.stage_0(user_id)
+            if "start" in data:
+                reply_message =self.stage_1_to_2(
+                    user_id=user_id,
+                    message=event.message.text,
+                    start=data["start"]
+                )           
+            else:
+                reply_message = self.stage_0_to_1(
+                    user_id=user_id, 
+                    message=event.message.text,
+                )
             
         line_bot_api.reply_message(
             event.reply_token,
@@ -62,14 +67,12 @@ class RandomInt:
             
         return reply_message
 
-    def stage_1_to_2(self, user_id, message) -> str:
+    def stage_1_to_2(self, user_id, message, start) -> str:
         try:
             number = int(message)
         except ValueError:
             reply_message = "請輸入結束的數字(要是一個數字呦！)"
         else:
-            start = self.user_states.get_state(user_id)["data"]["start"]
-            
             if number <= start:
                 reply_message = "結束數字必須大於開始數字。\n請輸入結束的數字"
             else:
