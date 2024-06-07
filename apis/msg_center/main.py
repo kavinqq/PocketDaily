@@ -43,7 +43,7 @@ class EventCenter:
             logger.info("亂數")
             random_int = RandomInt()
             random_int.main(event, user_state)
-        elif "圖片遊戲" or action == "adventure_game":
+        elif "圖片遊戲" in message or action == "adventure_game":
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)
         else:

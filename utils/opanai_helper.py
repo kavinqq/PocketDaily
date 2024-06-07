@@ -121,7 +121,7 @@ class OpenAIHelper:
         # Response Process
         gpt_response = self.client.chat.completions.create(
             model=model,
-            messages=history_messages
+            messages=messages
         )
         
         response_content = gpt_response.choices[0].message.content        
