@@ -66,7 +66,6 @@ class RandomInt:
             self.user_states.edit_state(
                 user_id=user_id,
                 action="random_int",
-                stage=1,
                 data={
                     "start": number
                 }
