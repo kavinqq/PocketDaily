@@ -57,7 +57,7 @@ Handler在收到事件後，會根據定義的行為來做出對應的處理。
 def handle_message(event):
     msg_center = EventCenter()
     msg_center.handle_event(event)
-
+    
 
 if __name__ == "__main__":
     app.run(debug=False)
