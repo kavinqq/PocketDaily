@@ -95,11 +95,19 @@ class AdventureGame:
             size="256x256"
         )
         
-        image_message = ImageSendMessage(
-            original_content_url=picture_url,
-            preview_image_url=picture_url,
+        line_bot_api.push_message(
+            event.source.user_id,
+            TextSendMessage(text=f"圖片連結如下:\n{picture_url}")
         )
+        
         try:
+            image_message = ImageSendMessage(
+                original_content_url=picture_url,
+                preview_image_url=picture_url,
+            )
+        
+        
+            
             line_bot_api.push_message(
                 event.source.user_id,
                 image_message
