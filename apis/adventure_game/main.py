@@ -97,12 +97,16 @@ class AdventureGame:
         line_bot_api.push_message(
             self.user_id,
             image_message
-        )
-        
+        )        
         
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(response), image_message]
+            TextSendMessage(text=f"{response}\n\n產生圖片需要一點時間，請稍等")
         )
+        line_bot_api.push_message(
+            self.user_id,
+            image_message,
+            timeout=60
+        )            
         
         return None
