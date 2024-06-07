@@ -46,7 +46,7 @@ class EventCenter:
         elif "圖片遊戲" in message or action == "adventure_game":
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)
-        elif "測試dall" in message:
+        elif "測試" in message:
             open_ai_helper = OpenAIHelper()
             pic_url = open_ai_helper.dall_e(
                 "幫我生成一窩貓咪",
