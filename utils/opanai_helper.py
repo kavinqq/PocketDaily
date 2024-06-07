@@ -61,7 +61,7 @@ class OpenAIHelper:
             size=(
                 size
                 if check_size_format(size)
-                else "480x480"
+                else "256x256"
             ),
             quality="standard",
             n=1
