@@ -96,7 +96,7 @@ class AdventureGame:
         
         picture_url = self.open_ai_helper.dall_e(
             input_text=response,
-            size="256x256"
+            size="1024x1024"
         )
         
         line_bot_api.push_message(

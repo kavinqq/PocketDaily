@@ -42,12 +42,13 @@ class OpenAIHelper:
         """        
         
         response = self.client.images.generate(
-            model="dall-e-2",
+            model="dall-e-3",
             prompt=input_text,
-            size=size
+            size=size,
+            n=1
         )
         
-        image_url = response.data[0].url
+        image_url = response.data[0].url.strip()
         
         return image_url
     
