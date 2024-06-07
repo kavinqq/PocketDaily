@@ -1,7 +1,11 @@
 import os
-from flask import Flask, request, abort
-from apis.first_test.main import first_test_bp
-from apis.msg_center.main import EventCenter
+
+from flask import (
+    Flask,
+    request,
+    abort,
+    render_template
+)
 from linebot import WebhookHandler
 from linebot.exceptions import (
     InvalidSignatureError
@@ -10,6 +14,9 @@ from linebot.models import (
     MessageEvent,
     TextMessage,
 )
+
+from apis.first_test.main import first_test_bp
+from apis.msg_center.main import EventCenter
 
 
 app = Flask(__name__)
@@ -21,7 +28,7 @@ line_handler = WebhookHandler(os.getenv('LineChannelSecret'))
 
 @app.route("/")
 def home():
-    return "Welcome to Line Bot!"
+    return render_template("index.html")
 
 
 """
