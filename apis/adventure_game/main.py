@@ -25,8 +25,11 @@ class AdventureGame:
             請把互動過程詳細描述出來，不要出現重複的場景或對話，
             故事要曲折離奇、高潮迭起、引人入勝。
         """
+        self.user_id = None
         
     def main(self, event: MessageEvent, user_state:Union[dict, None]) -> None:
+        self.user_id = event.source.user_id
+        
         if user_state is None:
             self.init_game(event)
         else:
@@ -40,7 +43,7 @@ class AdventureGame:
                 return None
             
             if user_input == "5":
-                self.user_states.delete_state(event.source.user_id)
+                self.user_states.delete_state(self.user_id)
                 line_bot_api.reply_message(
                     event.reply_token,
                     TextSendMessage(text="遊戲結束!!")
@@ -70,7 +73,7 @@ class AdventureGame:
         )
         
         self.user_states.edit_state(
-            user_id=event.source.user_id,
+            user_id=self.user_id,
             action=self.action,
             data=None,
             history_messages=history_messages            
@@ -86,7 +89,10 @@ class AdventureGame:
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=f"{response}\n產生圖片需要一點時間，請稍等")
+            
         )
+        
+        return None
     
     
     def gen_picture_reply(self, event: MessageEvent, response: str) -> None:
@@ -96,7 +102,7 @@ class AdventureGame:
         )
         
         line_bot_api.push_message(
-            event.source.user_id,
+            self.user_id,
             TextSendMessage(text=f"圖片連結如下:\n{picture_url}")
         )
         
@@ -105,11 +111,9 @@ class AdventureGame:
                 original_content_url=picture_url,
                 preview_image_url=picture_url,
             )
-        
-        
             
             line_bot_api.push_message(
-                event.source.user_id,
+                self.user_id,
                 image_message
             )
         except Exception as e:
