@@ -55,16 +55,14 @@ class EventCenter:
             
             line_bot_api.reply_message(
                 event.reply_token,                
-                TextSendMessage(text=pic_url)
+                [
+                    TextSendMessage(text="圖片來囉!!"),
+                    ImageSendMessage(
+                        original_content_url=pic_url,
+                        preview_image_url=pic_url
+                    )
+                ]
             )
-            
-            # line_bot_api.reply_message(
-            #     event.reply_token,                
-            #     ImageSendMessage(
-            #         original_content_url=pic_url,
-            #         preview_image_url=pic_url
-            #     )
-            # )
         else:
             line_bot_api.reply_message(
                 event.reply_token,
