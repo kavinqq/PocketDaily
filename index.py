@@ -1,4 +1,5 @@
 import os
+import logging
 
 from flask import (
     Flask,
@@ -22,12 +23,14 @@ from apis.event_center.main import EventCenter
 app = Flask(__name__)
 app.register_blueprint(first_test_bp, url_prefix="/first_test")
 
+logging.basicConfig(level=logging.INFO)
 
 line_handler = WebhookHandler(os.getenv('LineChannelSecret'))
 
 
 @app.route("/")
 def home():
+    logging.info("訪問了首頁")
     return render_template("index.html")
 
 
@@ -55,7 +58,7 @@ Handler在收到事件後，會根據定義的行為來做出對應的處理。
 """
 @line_handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    print("Handle message!!")    
+    logging.info("Handle message!!")    
     
     event_center = EventCenter()
     event_center.handle_event(event)
