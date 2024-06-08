@@ -33,7 +33,7 @@ class EventCenter:
         user_state = user_states.get_state(user_id)
         action = user_state.get("action") if user_state else ""
 
-        logger.info(f"User_id:{user_id}\tMessage:{message}\tReply:{event.reply_token}")
+        print(f"User_id:{user_id}\tMessage:{message}\tReply:{event.reply_token}")
 
         if any(like in message for like in LIKES):
             line_bot_api.reply_message(
@@ -46,7 +46,7 @@ class EventCenter:
         elif "圖片遊戲" in message or action == "adventure_game":
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)
-        elif "測試" in message:
+        elif "測試測試" in message:
             open_ai_helper = OpenAIHelper()
             pic_url = open_ai_helper.dall_e(
                 "幫我生成一窩貓咪",
