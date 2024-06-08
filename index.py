@@ -55,6 +55,8 @@ Handler在收到事件後，會根據定義的行為來做出對應的處理。
 """
 @line_handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    print("Handle message!!")    
+    
     event_center = EventCenter()
     event_center.handle_event(event)
     

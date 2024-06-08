@@ -46,7 +46,7 @@ class EventCenter:
         elif "圖片遊戲" in message or action == "adventure_game":
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)
-        elif "測試測試" in message:
+        elif "Test" in message:
             open_ai_helper = OpenAIHelper()
             pic_url = open_ai_helper.dall_e(
                 "幫我生成一窩貓咪",
@@ -58,13 +58,13 @@ class EventCenter:
                 TextSendMessage(text=pic_url)
             )
             
-            line_bot_api.reply_message(
-                event.reply_token,                
-                ImageSendMessage(
-                    original_content_url=pic_url,
-                    preview_image_url=pic_url
-                )
-            )
+            # line_bot_api.reply_message(
+            #     event.reply_token,                
+            #     ImageSendMessage(
+            #         original_content_url=pic_url,
+            #         preview_image_url=pic_url
+            #     )
+            # )
         else:
             line_bot_api.reply_message(
                 event.reply_token,
