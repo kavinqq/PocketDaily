@@ -1,19 +1,14 @@
 {
-    "builds": [
-      {
-        "src": "index.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "index.py"
-      }
-    ],
-    "functions": {
-      "index.py": {
-        "maxDuration": 60
-      }
+  "functions": {
+    "index.py": {
+      "runtime": "@vercel/python",
+      "maxDuration": 60
     }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.py"
+    }
+  ]
 }
