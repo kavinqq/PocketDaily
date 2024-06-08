@@ -9,7 +9,7 @@ from linebot.models import (
 from utils.user_states import UserStates
 from utils.opanai_helper import OpenAIHelper
 from constants.global_variables import line_bot_api
-
+from logging_config import logger
 
 class AdventureGame:
     def __init__(self) -> None:
@@ -89,6 +89,8 @@ class AdventureGame:
             size="1024x1024"
         )        
         
+        logger.info(f"\033[93m PIC_URL:{pic_url} \033[0m")
+        
         line_bot_api.reply_message(
             event.reply_token,
             [
@@ -97,7 +99,8 @@ class AdventureGame:
                     original_content_url=pic_url,
                     preview_image_url=pic_url
                 )
-            ]
+            ],
+            timeout=60
         )           
         
         return None
