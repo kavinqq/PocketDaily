@@ -50,7 +50,12 @@ class EventCenter:
             open_ai_helper = OpenAIHelper()
             pic_url = open_ai_helper.dall_e(
                 "幫我生成一窩貓咪",
-                size="256x256"
+                size="1024x1024"
+            )
+            
+            line_bot_api.reply_message(
+                event.reply_token,                
+                TextSendMessage(text=pic_url)
             )
             
             line_bot_api.reply_message(
