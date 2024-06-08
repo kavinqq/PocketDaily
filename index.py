@@ -18,30 +18,20 @@ from linebot.models import (
 
 from apis.first_test.main import first_test_bp
 from apis.event_center.main import EventCenter
+from logging_config import setup_logging
 
 
 app = Flask(__name__)
 app.register_blueprint(first_test_bp, url_prefix="/first_test")
 
-# 設置日誌
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 
-# 確保日誌輸出到標準輸出
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
-
+setup_logging()
 line_handler = WebhookHandler(os.getenv('LineChannelSecret'))
 
 
 @app.route("/")
 def home():
-    logging.info("訪問了首頁")
-    app.logger.info("訪問了首頁app_logger")
+    logging.info("訪問首頁！")
     return render_template("index.html")
 
 
@@ -69,7 +59,8 @@ Handler在收到事件後，會根據定義的行為來做出對應的處理。
 """
 @line_handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    logging.info("Handle message!!")    
+    logging.info("訪問首頁！ handling message event...")
+    logging.info(f"User_id: {event.source.user_id}, Message: {event.message.text}")
     
     event_center = EventCenter()
     event_center.handle_event(event)
