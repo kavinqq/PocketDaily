@@ -5,11 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Line Bot Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <h1>Welcome to Line Bot!</h1>
         <p>這是我的首頁!!</p>
+        
+        <div class="button-container">
+            <button class="btn" data-keyword="關鍵字1">關鍵字1</button>
+            <button class="btn" data-keyword="關鍵字2">關鍵字2</button>
+            <button class="btn" data-keyword="關鍵字3">關鍵字3</button>
+            <button class="btn" data-keyword="關鍵字4">關鍵字4</button>
+        </div>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="keyword-title"></h2>
+                <p id="keyword-description"></p>
+            </div>
+        </div>
     </div>
+
+    <script>
+        const descriptions = {
+            '關鍵字1': '這是關鍵字1的功能介紹。',
+            '關鍵字2': '這是關鍵字2的功能介紹。',
+            '關鍵字3': '這是關鍵字3的功能介紹。',
+            '關鍵字4': '這是關鍵字4的功能介紹。'
+        };
+
+        $(document).ready(function(){
+            $('.btn').click(function(){
+                const keyword = $(this).data('keyword');
+                $('#keyword-title').text(keyword);
+                $('#keyword-description').text(descriptions[keyword]);
+                $('#modal').show();
+            });
+
+            $('.close-btn').click(function(){
+                $('#modal').hide();
+            });
+        });
+    </script>
 </body>
 </html>
