@@ -11,7 +11,6 @@ from constants.global_variables import line_bot_api
 
 from utils.user_states import UserStates
 from utils.opanai_helper import OpenAIHelper
-from logging_config import logger
 
 
 LIKES = ["亭妤", "Betty"]

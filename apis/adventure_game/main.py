@@ -1,3 +1,5 @@
+import logging
+
 from typing import Union
 
 from linebot.models import (
@@ -9,7 +11,10 @@ from linebot.models import (
 from utils.user_states import UserStates
 from utils.opanai_helper import OpenAIHelper
 from constants.global_variables import line_bot_api
-from logging_config import logger
+
+
+logger = logging.getLogger(__name__)
+
 
 class AdventureGame:
     def __init__(self) -> None:

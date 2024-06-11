@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: pocket_daily
+    env_file:
+      - .env
+    volumes:
+      - .:/POCKETDAILY
+    expose:
+      - "8050"
+    networks:
+      - mynetwork
+
+  nginx:
+    image: nginx:latest
+    container_name: pocket_daily_nginx
+    ports:
+      - "8050:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+    networks:
+      - mynetwork
+  db:
+    image: postgres:13
+    container_name: pocket_daily_db
+    environment:
+      POSTGRES_DB: pocket_daily
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pocket@daily
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    external: true
+
+volumes:
+  postgres_data:
