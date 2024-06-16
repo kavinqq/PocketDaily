@@ -6,7 +6,7 @@ from flask import (
     abort,
     render_template,
 )
-from linebot.v3 import WebhookHandler
+from linebot import WebhookHandler
 from linebot.exceptions import (
     InvalidSignatureError
 )
