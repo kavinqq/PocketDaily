@@ -77,7 +77,17 @@ class AdventureGame:
     def init_game(self, event: MessageEvent) -> None:
         response, history_messages = self.open_ai_helper.chat_gpt(
             system_setting_str=self.default_prompt,
-            input_text="請在每一段故事結束時附上五個接續選項，選項五固定是離開遊戲。遊戲開始!"
+            input_text="""
+                請你在每一段劇情結束時,空一行並且附上五個數字接續選項，選項五固定是離開遊戲。
+                範例:
+                這是一個森林，你看到一隻狼在吼叫。
+                
+                1. 接近狼
+                2. xxx
+                3. yy
+                4. zzz
+                5. 結束遊戲
+            """
         )
         
         self.user_states.edit_state(
@@ -93,7 +103,7 @@ class AdventureGame:
     
     def gen_reply(self, event: MessageEvent, response: str) -> None:
         pic_url = self.open_ai_helper.dall_e(
-            input_text=f"{response}. PS:不需要繪製數字選項的部分，那是給用戶看的.",
+            input_text=f"{response}. PS:請不用在圖片內繪製數字選項的部分，這個部分是給使用者自己選的",
             size="1024x1024"
         )        
         
