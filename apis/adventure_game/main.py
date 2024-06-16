@@ -39,6 +39,7 @@ class AdventureGame:
             self.init_game(event)
         else:
             user_input = event.message.text
+            old_history_messages = user_state.get("history_messages", [])
             
             if str(user_input) not in ("1", "2", "3", "4", "5"):
                 line_bot_api.api.reply_message(
@@ -58,14 +59,16 @@ class AdventureGame:
             user_input = f"我選擇選項{user_input}"
             response, history_messages = self.open_ai_helper.chat_gpt(
                 input_text=user_input,
-                history_messages=history_messages,
+                history_messages=old_history_messages,
             )
-            
-            line_bot_api.api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=f"{response}\n產生圖片需要一點時間，請稍等")
+
+            self.user_states.edit_state(
+                user_id=self.user_id,
+                action=self.action,
+                data=None,
+                history_messages=history_messages
             )
-            
+
             self.gen_reply(event, response)
             
             return None
@@ -93,8 +96,6 @@ class AdventureGame:
             input_text=response,
             size="1024x1024"
         )        
-        
-        logger.info(f"\033[93m PIC_URL:{pic_url} \033[0m")
         
         line_bot_api.api.reply_message(
             event.reply_token,
