@@ -4,7 +4,8 @@ from flask import (
     Flask,
     request,
     abort,
-    render_template
+    render_template,
+    current_app
 )
 from linebot import WebhookHandler
 from linebot.exceptions import (
@@ -23,8 +24,9 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
+
 setup_logging()
-line_handler = WebhookHandler(os.getenv('LINE_CHANNEL_SECRET'))
+line_handler = WebhookHandler(current_app.config["CHANNEL_SECRET"])
 
 
 @app.route("/")

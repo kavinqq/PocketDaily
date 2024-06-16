@@ -1,8 +1,9 @@
 import os
-import re
 from typing import Tuple
 from enum import Enum
+
 from openai import OpenAI
+from flask import current_app
 
 
 class ChatGPTModelChoice(Enum):
@@ -12,8 +13,7 @@ class ChatGPTModelChoice(Enum):
 
 
 class OpenAIHelper:
-    _instance = None        
-    _initialized = False
+    _instance = None            
     
     def __new__(cls):        
         if cls._instance is None:
@@ -21,11 +21,7 @@ class OpenAIHelper:
         return cls._instance    
     
     def __init__(self) -> None:        
-        if not self._initialized:
-            self.api_key = os.getenv('OPENAI_API_KEY')
-            self.client = OpenAI(api_key=self.api_key)
-            
-            self._initialized = True
+        self.client = OpenAI(api_key=current_app.config["OPEN_AI_KEY"])
     
     def dall_e(
         self,

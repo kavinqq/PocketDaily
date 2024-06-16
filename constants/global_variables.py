@@ -1,5 +1,5 @@
-import os
 from linebot import LineBotApi
+from flask import current_app
 
 
-line_bot_api = LineBotApi(os.getenv("LINE_CHANNEL_SECRET"))
+line_bot_api = LineBotApi(current_app.config["LINE_CHANNEL_SECRET"])
