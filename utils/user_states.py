@@ -3,11 +3,12 @@ from typing import Union
 
 class UserStates:
     _instance = None
-    _states = {}
+    _states = None
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(UserStates, cls).__new__(cls)
+            cls._states = {}
         return cls._instance
 
     def get_state(

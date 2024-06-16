@@ -32,8 +32,6 @@ class EventCenter:
         user_state = user_states.get_state(user_id)
         action = user_state.get("action") if user_state else ""
 
-        print(f"User_id:{user_id}\tMessage:{message}\tReply:{event.reply_token}")
-
         if any(like in message for like in LIKES):
             line_bot_api.api.reply_message(
                 event.reply_token,

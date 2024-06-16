@@ -103,7 +103,7 @@ class AdventureGame:
     
     def gen_reply(self, event: MessageEvent, response: str) -> None:
         pic_url = self.open_ai_helper.dall_e(
-            input_text=f"{response}. PS:請不用在圖片內繪製數字選項的部分，這個部分是給使用者自己選的",
+            input_text=f"{response}. PS:圖片內請不要出現任何數字或文字。",
             size="1024x1024"
         )        
         
