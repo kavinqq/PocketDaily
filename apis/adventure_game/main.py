@@ -93,14 +93,14 @@ class AdventureGame:
     
     def gen_reply(self, event: MessageEvent, response: str) -> None:
         pic_url = self.open_ai_helper.dall_e(
-            input_text=response,
+            input_text=f"{response}. PS:不用顯示選項那是給用戶看的.",
             size="1024x1024"
         )        
         
         line_bot_api.api.reply_message(
             event.reply_token,
             [
-                TextSendMessage(text=f"{response}\n\n產生圖片需要一點時間，請稍等. . ."),
+                TextSendMessage(text=f"{response}"),
                 ImageSendMessage(
                     original_content_url=pic_url,
                     preview_image_url=pic_url
@@ -110,3 +110,4 @@ class AdventureGame:
         )           
         
         return None
+    
