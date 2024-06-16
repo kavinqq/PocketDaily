@@ -5,9 +5,8 @@ from flask import (
     request,
     abort,
     render_template,
-    current_app
 )
-from linebot import WebhookHandler
+from linebot.v3 import WebhookHandler
 from linebot.exceptions import (
     InvalidSignatureError
 )
@@ -26,7 +25,7 @@ app.config.from_object(Config)
 
 
 setup_logging()
-line_handler = WebhookHandler(current_app.config["CHANNEL_SECRET"])
+line_handler = WebhookHandler(app.config["CHANNEL_SECRET"])
 
 
 @app.route("/")
