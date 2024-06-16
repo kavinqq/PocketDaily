@@ -35,7 +35,7 @@ class EventCenter:
         print(f"User_id:{user_id}\tMessage:{message}\tReply:{event.reply_token}")
 
         if any(like in message for like in LIKES):
-            line_bot_api.reply_message(
+            line_bot_api.api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="希望能更瞭解她")
             )
@@ -52,7 +52,7 @@ class EventCenter:
                 size="1024x1024"
             )
             
-            line_bot_api.reply_message(
+            line_bot_api.api.reply_message(
                 event.reply_token,                
                 [
                     TextSendMessage(text="圖片來囉!!"),
@@ -63,7 +63,7 @@ class EventCenter:
                 ]
             )
         else:
-            line_bot_api.reply_message(
+            line_bot_api.api.reply_message(
                 event.reply_token,
                 TextSendMessage(text=message)
             )

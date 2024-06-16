@@ -41,7 +41,7 @@ class RandomInt:
         else:
             reply_message = self.stage_0(user_id)
             
-        line_bot_api.reply_message(
+        line_bot_api.api.reply_message(
             event.reply_token,
             TextSendMessage(text=reply_message)
         )        

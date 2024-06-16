@@ -41,7 +41,7 @@ class AdventureGame:
             user_input = event.message.text
             
             if str(user_input) not in ("1", "2", "3", "4", "5"):
-                line_bot_api.reply_message(
+                line_bot_api.api.reply_message(
                     event.reply_token,
                     TextSendMessage(text="請輸入1-5的數字")
                 )
@@ -49,7 +49,7 @@ class AdventureGame:
             
             if user_input == "5":
                 self.user_states.delete_state(self.user_id)
-                line_bot_api.reply_message(
+                line_bot_api.api.reply_message(
                     event.reply_token,
                     TextSendMessage(text="遊戲結束!!")
                 )
@@ -61,7 +61,7 @@ class AdventureGame:
                 history_messages=history_messages,
             )
             
-            line_bot_api.reply_message(
+            line_bot_api.api.reply_message(
                 event.reply_token,
                 TextSendMessage(text=f"{response}\n產生圖片需要一點時間，請稍等")
             )
@@ -96,7 +96,7 @@ class AdventureGame:
         
         logger.info(f"\033[93m PIC_URL:{pic_url} \033[0m")
         
-        line_bot_api.reply_message(
+        line_bot_api.api.reply_message(
             event.reply_token,
             [
                 TextSendMessage(text=f"{response}\n\n產生圖片需要一點時間，請稍等. . ."),
