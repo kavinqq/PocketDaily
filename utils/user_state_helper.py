@@ -16,7 +16,9 @@ class UserStatesHelper:
         self,
         user_id: str
     ) -> None:
-        if UserState.query.get(user_id):
+        if UserState.query.get(
+            {"line_id": user_id}
+        ):
             pass
         else:        
             user_state = UserState(line_id=user_id)       
@@ -28,7 +30,11 @@ class UserStatesHelper:
         self,
         user_id: str
     ) -> Union[UserState, None]:        
-        return UserState.query.get(line_id=user_id) 
+        return UserState.query.get(
+            {
+                "line_id": user_id
+            }
+        ) 
 
     def update(
         self,
@@ -37,7 +43,7 @@ class UserStatesHelper:
         data=None,
         history_messages=None
     ) -> None:
-        user_state: UserState = UserState.query.get(user_id)
+        user_state: UserState = UserState.query.get({"line_id": user_id})
         user_state.update(
             action=action,
             data=data,

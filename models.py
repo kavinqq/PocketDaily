@@ -48,8 +48,8 @@ class TimeStampedModel(db.Model):
 
 
 class UserStateEnum(Enum):
-    RANDOM_INT = "random_int"
-    ADVENTURE_GAME = "adventure_time"
+    RANDOM_INT = "RANDOM_INT"
+    ADVENTURE_GAME = "ADVENTURE_GAME"
 
 
 class UserState(TimeStampedModel):
@@ -75,6 +75,8 @@ class UserState(TimeStampedModel):
         nullable=True,
         info={"verbose_name": "對話歷史"}
     )
+    
+    input_histories = relationship("UserInputHistory", back_populates="user_state")
     
     def __repr__(self):
         return f"<UserState:{self.line_id}>"

@@ -65,12 +65,11 @@ class RandomInt:
         
         line_bot_api.api.reply_message(
             event.reply_token,
-            TextSendMessage(text=reply_message)
+            TextSendMessage(text="請輸入亂數開始的數字")
         )   
         
-        reply_message = "請輸入亂數開始的數字"
         
-        return reply_message
+        return None
         
     def stage_0_to_1(
         self,
