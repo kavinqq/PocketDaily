@@ -37,17 +37,17 @@ class EventCenter:
         if user_state.action is None and any(like in message for like in LIKES):
             line_bot_api.api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="""
-                    不要讓她太孤零零做需求, 但她也需要自己的空間。
-                    不要給她太多壓力，但要能幫助她更好。
-                    專案要為他留一個位置，要耐心等她。
-                    """
-                )
+                messages=[
+                    TextSendMessage(text="不要讓她太孤零零做需求"),
+                    TextSendMessage(text="她需要自己的空間"),
+                    TextSendMessage(text="不要給她太多壓力，但要能幫助她更好"),
+                    TextSendMessage(text="專案要為他留一個位置，要耐心等她"),
+                ]              
             )
-        elif "亂數" in message or user_state.action == UserStateEnum.RANDOM_INT.value:            
+        elif "亂數" in message or user_state.action == UserStateEnum.RANDOM_INT:            
             random_int = RandomInt()
             random_int.main(event, user_state)
-        elif "AdventureTime" in message or user_state.action == UserStateEnum.ADVENTURE_GAME.value:
+        elif "AdventureTime" in message or user_state.action == UserStateEnum.ADVENTURE_GAME:
             adventure_game = AdventureGame()
             adventure_game.main(event, user_state)     
         else:

@@ -13,7 +13,7 @@ from models import UserState, UserStateEnum
 
 class RandomInt:
     def __init__(self) -> None:
-        self.user_states = UserStatesHelper()
+        self.state_helper = UserStatesHelper()
         self.user_state = None
     
     def main(
@@ -32,7 +32,7 @@ class RandomInt:
             
             return None
               
-        data = data if isinstance(user_state.data, dict) else {}
+        data = user_state.data if isinstance(user_state.data, dict) else {}
         
         if "start" in data:
             reply_message =self.stage_1_to_2(
@@ -58,7 +58,7 @@ class RandomInt:
         event: MessageEvent,
         user_id: str
     ) -> None:
-        self.user_states.update(
+        self.state_helper.update(
             user_id=user_id,
             action=UserStateEnum.RANDOM_INT.value,
         )
@@ -81,7 +81,7 @@ class RandomInt:
         except ValueError:
             reply_message = "請輸入開始數字~"
         else:
-            self.user_states.update(
+            self.state_helper.update(
                 user_id=user_id,
                 action=UserStateEnum.RANDOM_INT.value,
                 data={
@@ -109,7 +109,7 @@ class RandomInt:
                 random_number = random.randint(start, number)
                 reply_message = f"亂數結果為: {random_number}"
                 
-                self.user_state.update(
+                self.state_helper.update(
                     user_id=user_id,
                 )
                 

@@ -47,6 +47,7 @@ class AdventureGame:
         # Start game
         if self.user_state.data is None:            
             self.start_game(event)
+            return None
 
         # Check user input
         if str(user_input) not in ("1", "2", "3", "4", "5"):
@@ -91,10 +92,11 @@ class AdventureGame:
         event: MessageEvent
     ) -> None:
         line_bot_api.api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="圖文冒險遊戲即將開始!!"),
-            TextSendMessage(text="回應速度較慢，請耐心等候 :D"),
-            TextSendMessage(text="請輸入冒險主角的名字:"),            
+            reply_token=event.reply_token,
+            messages=[
+                TextSendMessage(text="圖文冒險遊戲即將開始!!"),
+                TextSendMessage(text="回應速度較慢，請耐心等候 :D"),
+            ]
         )
 
         self.user_states.update(
@@ -113,7 +115,6 @@ class AdventureGame:
         response, history_messages = self.open_ai_helper.chat_gpt(
             system_setting_str=f"""
                 {self.default_prompt}。
-                主角的名字是: {main_character_name}。
                 
                 請在每一段劇情結束時,空一行並且附上五個數字接續選項，選項五固定是離開遊戲。
 
@@ -147,7 +148,14 @@ class AdventureGame:
         
     ) -> None:
         pic_url = self.open_ai_helper.dall_e(
-            input_text=f"{response}. 。",
+            input_text=f"""
+                PictureStory:{response}。
+                
+                PictureRequirement:
+                1. Don't show any text in the picture.
+                2. Don't show any chat dialog in the picture.
+                3. Don't show any option in the picture.               
+            """,
             size="1024x1024"
         )
 
