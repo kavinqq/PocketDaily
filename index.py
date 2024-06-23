@@ -1,5 +1,3 @@
-import os
-
 from flask import (
     Flask,
     request,
@@ -15,6 +13,7 @@ from linebot.models import (
     TextMessage,
 )
 
+from models import db, migrate
 from apis.event_center.main import EventCenter
 from log_config import setup_logging
 from config import Config
@@ -23,6 +22,8 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 
+db.init_app(app)
+migrate.init_app(app, db)
 
 setup_logging()
 line_handler = WebhookHandler(app.config["CHANNEL_SECRET"])

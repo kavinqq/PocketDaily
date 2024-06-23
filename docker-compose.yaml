@@ -7,11 +7,13 @@ services:
     env_file:
       - .env
     volumes:
-      - .:/POCKETDAILY
+      - .:/PocketDaily
     expose:
       - "8050"
     networks:
       - mynetwork
+    depends_on:
+      - psql
 
   nginx:
     image: nginx:latest
@@ -24,15 +26,19 @@ services:
       - web
     networks:
       - mynetwork
-  db:
-    image: postgres:13
+
+  psql:
+    image: postgres:16.3
     container_name: pocket_daily_db
     environment:
       POSTGRES_DB: pocket_daily
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: pocket@daily
+      POSTGRES_PASSWORD: PocketDaily
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    expose:
+      - 5432
     networks:
       - mynetwork
 

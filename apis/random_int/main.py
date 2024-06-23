@@ -1,45 +1,50 @@
 import random
-from typing import Union
+from typing import Optional
 
 from linebot.models import (
     MessageEvent,
     TextSendMessage,
 )
 
-from utils.user_states import UserStates
+from utils.user_state_helper import UserStatesHelper
 from constants.global_variables import line_bot_api
+from models import UserState, UserStateEnum
 
 
 class RandomInt:
     def __init__(self) -> None:
-        self.user_states = UserStates()
-        self.action = "random_int"
+        self.user_states = UserStatesHelper()
+        self.user_state = None
     
     def main(
         self,
         event: MessageEvent,
-        user_state: Union[dict, None]
-    ) -> None:
+        user_state: Optional[UserState]
+    ) -> None:        
+        user_id: str = event.source.user_id
+        self.user_state = user_state
         
-        user_id = event.source.user_id
-        
-        if user_state:
-            data = user_state.get("data")
-            data = data if isinstance(data, dict) else {}
+        if self.user_state.action is None:
+            self.stage_0(
+                event=event,
+                user_id=user_id
+            )
             
-            if "start" in data:
-                reply_message =self.stage_1_to_2(
-                    user_id=user_id,
-                    message=event.message.text,
-                    start=data["start"]
-                )           
-            else:
-                reply_message = self.stage_0_to_1(
-                    user_id=user_id, 
-                    message=event.message.text,
-                )
+            return None
+              
+        data = data if isinstance(user_state.data, dict) else {}
+        
+        if "start" in data:
+            reply_message =self.stage_1_to_2(
+                user_id=user_id,
+                message=event.message.text,
+                start=data["start"]
+            )           
         else:
-            reply_message = self.stage_0(user_id)
+            reply_message = self.stage_0_to_1(
+                user_id=user_id, 
+                message=event.message.text,
+            )       
             
         line_bot_api.api.reply_message(
             event.reply_token,
@@ -48,24 +53,38 @@ class RandomInt:
         
         return None
     
-    def stage_0(self, user_id) -> str:
-        self.user_states.edit_state(
+    def stage_0(
+        self,
+        event: MessageEvent,
+        user_id: str
+    ) -> None:
+        self.user_states.update(
             user_id=user_id,
-            action=self.action,
+            action=UserStateEnum.RANDOM_INT.value,
         )
+        
+        line_bot_api.api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply_message)
+        )   
+        
         reply_message = "請輸入亂數開始的數字"
         
         return reply_message
         
-    def stage_0_to_1(self, user_id, message) -> str:
+    def stage_0_to_1(
+        self,
+        user_id: str,
+        message: str
+    ) -> str:
         try:
             number = int(message)
         except ValueError:
-            reply_message = "請輸入開始的數字(要是一個數字呦！)"
+            reply_message = "請輸入開始數字~"
         else:
-            self.user_states.edit_state(
+            self.user_states.update(
                 user_id=user_id,
-                action="random_int",
+                action=UserStateEnum.RANDOM_INT.value,
                 data={
                     "start": number
                 }
@@ -74,7 +93,12 @@ class RandomInt:
             
         return reply_message
 
-    def stage_1_to_2(self, user_id, message, start) -> str:
+    def stage_1_to_2(
+        self,
+        user_id: str,
+        message: str,
+        start: int
+    ) -> str:
         try:
             number = int(message)
         except ValueError:
@@ -86,6 +110,8 @@ class RandomInt:
                 random_number = random.randint(start, number)
                 reply_message = f"亂數結果為: {random_number}"
                 
-                self.user_states.delete_state(user_id)
+                self.user_state.update(
+                    user_id=user_id,
+                )
                 
         return reply_message
